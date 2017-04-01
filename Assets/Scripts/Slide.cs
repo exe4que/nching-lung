@@ -7,5 +7,6 @@ public class Slide {
     public string title;
     [TextArea(7,10)]
     public string info;
-    public GameObject[] hotspots;
+    public string[] hotspots;
+    public SlideshowManager.cameras camera = SlideshowManager.cameras.FRONT;
 }

@@ -76,9 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CanvasManager.cs" />
+    <Compile Include="Assets\Scripts\HotspotBehaviour.cs" />
+    <Compile Include="Assets\Scripts\HotspotsManager.cs" />
     <Compile Include="Assets\Scripts\InfoMenuManager.cs" />
     <Compile Include="Assets\Scripts\SceneControlsManager.cs" />
     <Compile Include="Assets\Scripts\Slide.cs" />
+    <Compile Include="Assets\Scripts\SlideSet.cs" />
     <Compile Include="Assets\Scripts\SlideshowManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

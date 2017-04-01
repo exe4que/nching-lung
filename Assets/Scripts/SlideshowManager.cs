@@ -20,7 +20,7 @@ public class SlideshowManager : MonoBehaviour {
     }
     #endregion
 
-    public Slide[] slides;
+    public SlideSet set;
     private int index;
     private float clock;
 
@@ -28,19 +28,23 @@ public class SlideshowManager : MonoBehaviour {
         StopSlideshow();
     }
 
+    public bool GetPlay() {
+        return set.isPlayable;
+    }
+
     public int GetIndex() {
         return this.index;
     }
 
     public Slide GetSlide(int _i) {
-        return slides[_i];
+        return set.slides[_i];
     }
 
     public Slide GetCurrentSlide() {
         if (index < 0) {
             return null;
         }
-        return slides[index];
+        return set.slides[index];
     }
 
     public void ToogleSlideshow() {
@@ -58,24 +62,26 @@ public class SlideshowManager : MonoBehaviour {
 
     public void StopSlideshow() {
         CanvasManager.Instance.SetHeader(-1,"");
-        //CanvasManager.Instance.SetInfo("");
+        CanvasManager.Instance.SetShortInfo("");
         index = -1;
     }
 
     void Update() {
         if (index < 0) return;
-        if (clock >= slides[index].duration) {
+        if (clock >= set.slides[index].duration) {
             index++;
-            if (index >= slides.Length) {
+            if (index >= set.slides.Length) {
                 StopSlideshow();
             }
             clock = 0;
             return;
         }
         if (clock == 0) {
-            CanvasManager.Instance.SetHeader(slides[index].number,slides[index].title);
-            //CanvasManager.Instance.SetInfo(slides[index].info);
+            CanvasManager.Instance.SetHeader(set.slides[index].number,set.slides[index].title);
+            CanvasManager.Instance.SetShortInfo(set.slides[index].info);
         }
         clock += Time.deltaTime;
     }
+
+    public enum cameras { FRONT, BACK };
 }

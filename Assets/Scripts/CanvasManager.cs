@@ -48,6 +48,10 @@ public class CanvasManager : MonoBehaviour {
         this.infoMenu.SendMessage("SetInfo",_info);
     }
 
+    public void SetShortInfo(string _info) {
+        this.onSceneControls.SendMessage("SetInfo",_info);
+    }
+
     public void InfoMenu_PressBackButton() {
         this.infoMenu.SendMessage("PressBack");
     }
