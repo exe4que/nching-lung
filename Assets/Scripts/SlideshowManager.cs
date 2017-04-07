@@ -23,6 +23,12 @@ public class SlideshowManager : MonoBehaviour {
     public SlideSet set;
     private int index;
     private float clock;
+    public bool isPlaying;
+    private AudioSource player;
+
+    void Awake() {
+        player = this.GetComponent<AudioSource>();
+    }
 
     void Start() {
         StopSlideshow();
@@ -48,39 +54,68 @@ public class SlideshowManager : MonoBehaviour {
     }
 
     public void ToogleSlideshow() {
-        if (index >= 0) {
+        if (isPlaying) {
             StopSlideshow();
-        }else {
+        } else {
             StartSlideshow();
         }
     }
 
     public void StartSlideshow() {
+        isPlaying = true;
         index = 0;
         clock = 0f;
+        LoadSlide(0);
     }
 
     public void StopSlideshow() {
+        isPlaying = false;
         CanvasManager.Instance.SetHeader(-1,"");
         CanvasManager.Instance.SetShortInfo("");
         index = -1;
     }
 
+    public void LoadSlide(int _index) {
+        //Debug.Log("index="+index);
+        if (index < 0 || index >= set.slides.Length) {
+            StopSlideshow();
+
+        } else {
+            int number = set.slides[_index].showNumber ? _index + 1 : -1;
+            CanvasManager.Instance.SetHeader(number,set.slides[_index].title);
+            CanvasManager.Instance.SetShortInfo(set.slides[_index].info);
+            HotspotsManager.Instance.DeactivateHotspots();
+            HotspotsManager.Instance.ActivateHotspots(set.slides[_index].hotspots);
+        }
+        if (isPlaying) player.Play();
+    }
+
+    private void Next() {
+        index++;
+        clock = 0;
+        LoadSlide(index);
+    }
+    public void PressNext() {
+        Next();
+        isPlaying = false;
+    }
+    private void Previous() {
+        index--;
+        clock = 0;
+        LoadSlide(index);
+    }
+    public void PressPrevious() {
+        Previous();
+        isPlaying = false;
+    }
+
     void Update() {
-        if (index < 0) return;
-        if (clock >= set.slides[index].duration) {
-            index++;
-            if (index >= set.slides.Length) {
-                StopSlideshow();
+        if (isPlaying) {
+            if (clock >= set.slides[index].duration) {
+                Next();
             }
-            clock = 0;
-            return;
+            clock += Time.deltaTime;
         }
-        if (clock == 0) {
-            CanvasManager.Instance.SetHeader(set.slides[index].number,set.slides[index].title);
-            CanvasManager.Instance.SetShortInfo(set.slides[index].info);
-        }
-        clock += Time.deltaTime;
     }
 
     public enum cameras { FRONT, BACK };

@@ -18,6 +18,8 @@ public class InfoMenuManager : MonoBehaviour {
             if (currentSlide != null) {
                 SetInfo(SlideshowManager.Instance.GetCurrentSlide().info);
             }
+        } else {
+            if (txtContent != null) SetInfo("");
         }
     }
 

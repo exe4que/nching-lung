@@ -5,8 +5,11 @@ public class SceneControlsManager : MonoBehaviour {
 
     Button btnPlay, btnInfo;
     Text txtNumber, txtTitle, txtInfo;
+    GameObject imgPlay, imgStop;
     void Awake() {
         this.btnPlay = transform.FindChild("btn_play").GetComponent<Button>();
+        this.imgPlay = btnPlay.transform.GetChild(0).gameObject;
+        this.imgStop = btnPlay.transform.GetChild(1).gameObject;
         this.btnInfo = transform.FindChild("btn_info").GetComponent<Button>();
         this.txtNumber = transform.FindChild("txt_number").GetComponent<Text>();
         this.txtTitle = transform.FindChild("txt_title").GetComponent<Text>();
@@ -27,8 +30,8 @@ public class SceneControlsManager : MonoBehaviour {
 
     public void SetInfo(string _info) {
         bool trimmed = false;
-        if (_info.Length>15) {
-            _info = _info.Substring(0,15).tr
+        if (_info.Length>20) {
+            _info = _info.Substring(0,20).Trim();
             trimmed = true;
         }
         this.txtInfo.text = _info + (trimmed ? "..." : "");
@@ -40,5 +43,21 @@ public class SceneControlsManager : MonoBehaviour {
 
     public void PressPlay() {
         SlideshowManager.Instance.ToogleSlideshow();
+        SetPlayImg();
+    }
+
+    public void PressNext() {
+        SlideshowManager.Instance.PressNext();
+        SetPlayImg();
+    }
+
+    public void PressPrevious() {
+        SlideshowManager.Instance.PressPrevious();
+        SetPlayImg();
+    }
+
+    private void SetPlayImg() {
+        imgPlay.SetActive(!SlideshowManager.Instance.isPlaying);
+        imgStop.SetActive(SlideshowManager.Instance.isPlaying);
     }
 }

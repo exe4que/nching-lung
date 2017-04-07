@@ -2,7 +2,7 @@
 
 [System.Serializable]
 public class Slide {
-    public int number;
+    public bool showNumber=true;
     public float duration;
     public string title;
     [TextArea(7,10)]
